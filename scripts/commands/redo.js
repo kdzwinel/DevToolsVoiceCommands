@@ -19,7 +19,7 @@ class RedoCommand extends Command {
   }
 
   redoLastAction() {
-    console.log('undo');
+    console.log('redo');
 
     let tabDebugger = this._commandRunner.getTabDebugger();
 

@@ -32,7 +32,6 @@ class NodeInspectionCommand extends Command {
         chrome.tts.speak('Node not found.');
         throw new Error('Node not found.');
       }
-      console.log('Node found.');
 
       this._commandRunner.setContextNodeId(data.nodeId);
 

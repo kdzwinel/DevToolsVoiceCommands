@@ -25,9 +25,6 @@ function hideRecordingIcon() {
 let speechRecognition = new SpeechRecognition();
 let commandRunner = new CommandRunner();
 
-//TODO remove me
-window.cr = commandRunner;
-
 commandRunner.registerCommand(NodeInspectionCommand);
 commandRunner.registerCommand(NodeDeletionCommand);
 commandRunner.registerCommand(CSSChangeCommand);
@@ -48,8 +45,6 @@ chrome.browserAction.onClicked.addListener(() => {
     .then(getActiveTab)
     .then((tab) => {
       tabDebugger = new TabDebugger(tab.id);
-      //TODO remove
-      window.td = tabDebugger;
       return tabDebugger.connect();
     })
     .then(() => {
@@ -61,8 +56,7 @@ chrome.browserAction.onClicked.addListener(() => {
         commandRunner.recognize(transcript);
       });
       speechRecognition.onEnd.addListener(() => {
-        //TODO add
-        //tabDebugger.disconnect();
+        tabDebugger.disconnect();
         hideRecordingIcon();
       });
     }).catch((error) => {

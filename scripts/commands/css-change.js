@@ -39,8 +39,6 @@ class CSSChangeCommand extends Command {
         oldStyleValue = data.attributes[idxOfStyle + 1];
       }
 
-      console.log('changing styles from', oldStyleValue);
-
       return tabDebugger.sendCommand('DOM.setAttributeValue', {
         nodeId,
         name: 'style',
