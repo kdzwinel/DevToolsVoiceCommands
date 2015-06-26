@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>DevToolsVoiceCommands setup</title>
+  <style>
+    .main {
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 180px;
+      width: 700px;
+      text-align: center;
+    }
+
+    .ask img {
+      box-shadow: black 0 0 8px 0;
+      width:350px
+    }
+
+    .success img {
+      width: 64px;
+    }
+
+    .error {
+      color: #DC5C5C;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+<div class="main">
+  <div class="ask">
+    <h1>DevToolsVoiceCommands requires access to your microphone, please accept the dialog above.</h1>
+    <img src="images/allow-mic-access.png" />
+    <p class="error"></p>
+  </div>
+  <div class="success" hidden>
+    <h1>DevToolsVoiceCommands has access to your microphone and is ready to use!</h1>
+  </div>
+</div>
+<script src="dist/options.js"></script>
+</body>
+</html>

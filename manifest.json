@@ -1,0 +1,29 @@
+{
+  "name": "DevToolsVoiceCommands",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "Inspect and modify websites using voice commands.",
+  "icons": {
+    "16": "images/icon-16.png",
+    "128": "images/icon-128.png"
+  },
+  "background": {
+    "scripts": [
+      "bower_components/traceur-runtime/traceur-runtime.min.js",
+      "dist/background.js"
+    ]
+  },
+  "browser_action": {
+    "default_icon": {
+      "19": "images/icon-19.png",
+      "38": "images/icon-38.png"
+    },
+    "default_title": "DevToolsVoiceCommands"
+  },
+  "options_page": "options.html",
+  "permissions": [
+    "debugger",
+    "tts",
+    "tabs"
+  ]
+}
