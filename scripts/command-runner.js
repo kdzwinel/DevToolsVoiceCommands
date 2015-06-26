@@ -10,6 +10,7 @@ class CommandRunner {
     this._tabDebugger = tabDebugger;
 
     tabDebugger.sendCommand('DOM.enable')
+      .then(tabDebugger.sendCommand.bind(tabDebugger, 'CSS.enable'))
       .then(tabDebugger.sendCommand.bind(tabDebugger, 'DOM.getDocument'))
       .then((data) => {
         if(!data.root) {

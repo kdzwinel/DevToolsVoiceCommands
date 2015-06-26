@@ -1,29 +1,10 @@
 import Command from '../command.js';
-
-function toCSSProperty(text) {
-  return text.toLowerCase().replace(' ', '-');
-}
-
-let cssUnits = {
-  pixel: 'px',
-  pixels: 'px',
-  em: 'em',
-  ems: 'em',
-  percent: '%'
-};
-
-function toCSSValue(value, unit) {
-  if(unit) {
-    return value + cssUnits[unit];
-  }
-
-  return value;
-}
+import {toCSSProperty, toCSSValue} from '../helpers/css.js';
 
 class CSSChangeCommand extends Command {
   constructor(commandRunner) {
     super(commandRunner);
-    this._regex = /(change|set)( it's)? (\w+( \w+)?) to (\w+) ?(pixel|pixels|percent|em|ems)?/i;
+    this._regex = /(change|set)( its)? (\w+( \w+)?) to (\w+) ?(pixel|pixels|percent|em|ems)?/i;
   }
 
   execute(text) {

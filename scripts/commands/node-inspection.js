@@ -10,7 +10,7 @@ class NodeInspectionCommand extends Command {
     let matches = text.match(this._regex);
 
     if(matches) {
-      return this.selectNode(matches[2] + ', #' + matches[2]);
+      return this.selectNode(matches[2] + ', #' + matches[2] + ', .' + matches[2]);
     }
 
     return new Promise((resolve, reject) => {
@@ -39,13 +39,19 @@ class NodeInspectionCommand extends Command {
       return tabDebugger.sendCommand('DOM.highlightNode', {
         highlightConfig: {
           contentColor: {
-            r: 255,
-            g: 0,
-            b: 0,
+            r: 155,
+            g: 11,
+            b: 239,
             a: 0.7
-          }
+          },
+          showInfo: true
         },
         nodeId: data.nodeId
+      }).then(() => {
+        //stop highlighting after couple of seconds
+        setTimeout(() => {
+          tabDebugger.sendCommand('DOM.hideHighlight');
+        }, 2000);
       });
     }).catch(() => {
       chrome.tts.speak('Node not found.');

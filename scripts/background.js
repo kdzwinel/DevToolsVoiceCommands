@@ -1,11 +1,12 @@
 import SpeechRecognition from './speech-recognition.js';
 import CommandRunner from './command-runner.js';
 import TabDebugger from './tab-debugger.js';
-import {getActiveTab} from './helpers.js';
+import {getActiveTab} from './helpers/tabs.js';
 
 import NodeInspectionCommand from './commands/node-inspection.js';
 import NodeDeletionCommand from './commands/node-deletion.js';
 import CSSChangeCommand from './commands/css-change.js';
+import CSSGetValueCommand from './commands/css-get-value.js';
 import UndoCommand from './commands/undo.js';
 import RedoCommand from './commands/redo.js';
 
@@ -30,6 +31,7 @@ window.cr = commandRunner;
 commandRunner.registerCommand(NodeInspectionCommand);
 commandRunner.registerCommand(NodeDeletionCommand);
 commandRunner.registerCommand(CSSChangeCommand);
+commandRunner.registerCommand(CSSGetValueCommand);
 commandRunner.registerCommand(UndoCommand);
 commandRunner.registerCommand(RedoCommand);
 
