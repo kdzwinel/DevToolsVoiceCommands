@@ -9,16 +9,21 @@
       margin-right: auto;
       margin-top: 180px;
       width: 700px;
+    }
+
+    .main h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 2em;
+    }
+
+    .ask {
       text-align: center;
     }
 
     .ask img {
       box-shadow: black 0 0 8px 0;
       width:350px
-    }
-
-    .success img {
-      width: 64px;
     }
 
     .error {
@@ -29,15 +34,24 @@
 </head>
 <body>
 <div class="main">
-  <div class="ask">
+  <section class="loading">
+    <h1>Loading ...</h1>
+  </section>
+  <section class="ask" hidden>
     <h1>DevToolsVoiceCommands requires access to your microphone, please accept the dialog above.</h1>
     <img src="images/allow-mic-access.png" />
     <p class="error"></p>
-  </div>
-  <div class="success" hidden>
-    <h1>DevToolsVoiceCommands has access to your microphone and is ready to use!</h1>
-  </div>
+  </section>
+  <section class="success" hidden>
+    <h1>DevToolsVoiceCommands is ready to use!</h1>
+
+    <p>Select assistant voice: <select id="voice"><option value="">Use default</option></select></p>
+    <p>Available commands: </p>
+    <ul id="commands">
+    </ul>
+  </section>
 </div>
+<script src="bower_components/traceur-runtime/traceur-runtime.min.js"></script>
 <script src="dist/options.js"></script>
 </body>
 </html>

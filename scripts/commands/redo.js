@@ -27,4 +27,6 @@ class RedoCommand extends Command {
   }
 }
 
+RedoCommand.description = `Redo last command with "redo".`;
+
 export default RedoCommand;

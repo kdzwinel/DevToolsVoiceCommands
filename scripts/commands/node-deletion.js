@@ -36,4 +36,6 @@ class NodeDeletionCommand extends Command {
   }
 }
 
+NodeDeletionCommand.description = `Remove currently inspected node with "remove it" or "delete it".`;
+
 export default NodeDeletionCommand;

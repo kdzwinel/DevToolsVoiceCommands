@@ -27,4 +27,6 @@ class UndoCommand extends Command {
   }
 }
 
+UndoCommand.description = `Undo last command with "undo".`;
+
 export default UndoCommand;

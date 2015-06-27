@@ -51,4 +51,6 @@ class CSSChangeCommand extends Command {
   }
 }
 
+CSSChangeCommand.description = `Change CSS property value of currently inspected node by saying "change its x to y" or "set its x to y" (where "x" is the name of the CSS property and "y" is the new value).`;
+
 export default CSSChangeCommand;

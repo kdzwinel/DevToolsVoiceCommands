@@ -59,4 +59,6 @@ class NodeInspectionCommand extends Command {
   }
 }
 
+NodeInspectionCommand.description = `Select DOM nodes with "select x" or "inspect x" (where "x" is the name of the tag, id or CSS class). If multiple nodes match, only the first one will be selected.`;
+
 export default NodeInspectionCommand;

@@ -20,7 +20,7 @@ class CSSGetValueCommand extends Command {
   }
 
   getComputedValue(property, nodeId) {
-    console.log('getComputedValue', nodeId);
+    console.log('getComputedValue', property, nodeId);
 
     if(!nodeId) {
       throw new Error('Invalid node.');
@@ -47,5 +47,7 @@ class CSSGetValueCommand extends Command {
     });
   }
 }
+
+CSSGetValueCommand.description = `Get CSS property value of currently inspected node by saying "get its x" or "what's its x" (where "x" is the name of the CSS property).`;
 
 export default CSSGetValueCommand;
