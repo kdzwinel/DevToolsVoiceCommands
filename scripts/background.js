@@ -2,6 +2,7 @@ import SpeechRecognition from './speech-recognition.js';
 import CommandRunner from './command-runner.js';
 import TabDebugger from './tab-debugger.js';
 import {getActiveTab} from './helpers/tabs.js';
+import RecordingIcon from './recording-icon.js';
 
 import NodeInspectionCommand from './commands/node-inspection.js';
 import NodeDeletionCommand from './commands/node-deletion.js';
@@ -10,19 +11,7 @@ import CSSGetValueCommand from './commands/css-get-value.js';
 import UndoCommand from './commands/undo.js';
 import RedoCommand from './commands/redo.js';
 
-function showRecordingIcon() {
-  chrome.browserAction.setBadgeText({
-    text: '·'
-  });
-}
-
-function hideRecordingIcon() {
-  chrome.browserAction.setBadgeText({
-    text:''
-  });
-}
-
-let speechRecognition = new SpeechRecognition();
+let recordingIcon = new RecordingIcon();
 let commandRunner = new CommandRunner();
 
 commandRunner.registerCommand(NodeInspectionCommand);
@@ -32,13 +21,25 @@ commandRunner.registerCommand(CSSGetValueCommand);
 commandRunner.registerCommand(UndoCommand);
 commandRunner.registerCommand(RedoCommand);
 
+let speechRecognition = new SpeechRecognition();
+let tabDebugger = null;
+
+speechRecognition.onResult.addListener((transcript) => {
+  commandRunner.recognize(transcript);
+});
+
+speechRecognition.onEnd.addListener(() => {
+  if(tabDebugger && tabDebugger.isConnected()) {
+    tabDebugger.disconnect();
+  }
+  recordingIcon.hide();
+});
+
 chrome.browserAction.onClicked.addListener(() => {
   if(speechRecognition.isActive()) {
     speechRecognition.stop();
     return;
   }
-
-  let tabDebugger;
 
   speechRecognition
     .start()
@@ -48,17 +49,8 @@ chrome.browserAction.onClicked.addListener(() => {
       return tabDebugger.connect();
     })
     .then(() => {
-      showRecordingIcon();
-
+      recordingIcon.show();
       commandRunner.setTabDebugger(tabDebugger);
-
-      speechRecognition.onResult.addListener((transcript) => {
-        commandRunner.recognize(transcript);
-      });
-      speechRecognition.onEnd.addListener(() => {
-        tabDebugger.disconnect();
-        hideRecordingIcon();
-      });
     }).catch((error) => {
       if (error == 'not-allowed') {
         chrome.runtime.openOptionsPage();
@@ -66,10 +58,6 @@ chrome.browserAction.onClicked.addListener(() => {
 
       if(speechRecognition.isActive()) {
         speechRecognition.stop();
-      }
-
-      if(tabDebugger.isConnected()) {
-        tabDebugger.disconnect();
       }
 
       console.log(error);
