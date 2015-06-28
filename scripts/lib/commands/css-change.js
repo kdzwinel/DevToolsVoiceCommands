@@ -50,6 +50,9 @@ class CSSChangeCommand extends Command {
         nodeId,
         name: 'style',
         value: oldStyleValue + text
+      }).then(() => {
+        //allow undoing attribute change
+        tabDebugger.sendCommand('DOM.markUndoableState');
       });
     }).catch(() => {
       throw new Error('Node not found.');

@@ -27,6 +27,9 @@ class NodeDeletionCommand extends Command {
 
     return tabDebugger.sendCommand('DOM.removeNode', {
       nodeId
+    }).then(() => {
+      //allow undoing node removal
+      tabDebugger.sendCommand('DOM.markUndoableState');
     }).catch(() => {
       throw new Error('Node not found.');
     });
