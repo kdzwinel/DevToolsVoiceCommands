@@ -1,3 +1,5 @@
+import ListenerManager from './listener-manager.js';
+
 function _attach(tabId) {
   var protocolVersion = '1.1';
 
@@ -49,10 +51,12 @@ class TabDebugger {
   constructor(tabId) {
     this._tabId = tabId;
     this._attached = true;
+    this.onDisconnect = new ListenerManager();
 
     chrome.debugger.onDetach.addListener((source, reason) => {
       if(source.tabId === this._tabId) {
         this._attached = false;
+        this.onDisconnect.notifyListeners();
       }
     });
   }

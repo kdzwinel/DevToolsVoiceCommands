@@ -46,6 +46,9 @@ chrome.browserAction.onClicked.addListener(() => {
     .then(getActiveTab)
     .then((tab) => {
       tabDebugger = new TabDebugger(tab.id);
+      tabDebugger.onDisconnect.addListener(() => {
+        speechRecognition.stop();
+      });
       return tabDebugger.connect();
     })
     .then(() => {
