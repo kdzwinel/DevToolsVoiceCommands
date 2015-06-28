@@ -3,6 +3,7 @@ import CommandRunner from './command-runner.js';
 import TabDebugger from './tab-debugger.js';
 import {getActiveTab} from './helpers/tabs.js';
 import RecordingIcon from './recording-icon.js';
+import TextToSpeech from './text-to-speech.js';
 
 import NodeInspectionCommand from './commands/node-inspection.js';
 import NodeDeletionCommand from './commands/node-deletion.js';
@@ -10,7 +11,6 @@ import CSSChangeCommand from './commands/css-change.js';
 import CSSGetValueCommand from './commands/css-get-value.js';
 import UndoCommand from './commands/undo.js';
 import RedoCommand from './commands/redo.js';
-import TextToSpeech from './text-to-speech.js';
 
 let textToSpeech = new TextToSpeech();
 let recordingIcon = new RecordingIcon();
@@ -28,12 +28,12 @@ let tabDebugger = null;
 
 speechRecognition.onResult.addListener((transcript) => {
   commandRunner.recognize(transcript).then((result) => {
-    if (result) {
+    if (result && typeof result === 'string') {
       textToSpeech.speak(result);
     }
   }).catch((error) => {
     if (error) {
-      textToSpeech.speak(error);
+      textToSpeech.speak(error.message);
     }
   });
 });

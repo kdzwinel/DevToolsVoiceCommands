@@ -40,10 +40,10 @@ function initListOfVoices() {
     let voiceName = voiceSelect.value;
 
     if(voiceName !== '') {
-      localStorage.voiceName = voiceName;
+      localStorage.setItem('voiceName', voiceName);
       chrome.tts.speak(voiceName + ' voice selected.', {voiceName})
     } else {
-      localStorage.voiceName = null;
+      localStorage.removeItem('voiceName');
       chrome.tts.speak('Default voice selected.');
     }
   });

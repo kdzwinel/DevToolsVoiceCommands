@@ -1,12 +1,9 @@
 class TextToSpeech {
   speak(text) {
     let options = {
-      enqueue: true
+      enqueue: true,
+      voiceName: localStorage.getItem('voiceName')//TODO do not query localStorage every time
     };
-
-    if(localStorage.voiceName) {
-      options.voiceName = localStorage.voiceName;
-    }
 
     chrome.tts.speak(text, options);
   }

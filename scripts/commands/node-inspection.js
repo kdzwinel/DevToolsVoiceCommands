@@ -35,6 +35,11 @@ class NodeInspectionCommand extends Command {
       nodeId: rootNodeId,
       selector
     }).then((data) => {
+      //when no results API returns nodeId === 0
+      if(!data.nodeId) {
+        throw new Error('Node not found.');
+      }
+
       commandContext.setContextNodeId(data.nodeId);
       commandContext.setContextCSSPropertyName(null);
 

@@ -37,7 +37,7 @@ class CSSGetValueCommand extends Command {
       });
 
       if(item) {
-        return fromCSSValueToText(item.value);
+        return property + ' value is ' + fromCSSValueToText(item.value);
       } else {
         return 'Property ' + property + ' not found.';
       }

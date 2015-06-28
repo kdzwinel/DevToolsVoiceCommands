@@ -37,6 +37,11 @@ function _sendCommand(tabId, command, data = {}) {
     chrome.debugger.sendCommand({
       tabId: tabId
     }, command, data, (response) => {
+      if (chrome.runtime.lastError) {
+        reject(chrome.runtime.lastError.message);
+        return;
+      }
+
       if (response.error) {
         reject(response.error);
         return;

@@ -43,6 +43,9 @@ class CommandRunner {
 
     let tabDebugger = this._tabDebugger;
     let commandContext = this._commandContext;
+    let dummyPromise = new Promise((resolve, reject) => {
+      resolve();
+    });
 
     return matches
       .sort((a, b) => {
@@ -50,14 +53,9 @@ class CommandRunner {
       })
       //call next command only after previous one has finished
       .reduce((promise, {command}) => {
-        if(!promise) {
-          return command.execute(text, tabDebugger, commandContext);
-        }
-
         let nextCommand = command.execute.bind(command, text, tabDebugger, commandContext);
-
         return promise.then(nextCommand);
-      }, null);
+      }, dummyPromise);
   }
 
 }
