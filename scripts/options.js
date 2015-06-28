@@ -1,9 +1,9 @@
-import NodeInspectionCommand from './commands/node-inspection.js';
-import NodeDeletionCommand from './commands/node-deletion.js';
-import CSSChangeCommand from './commands/css-change.js';
-import CSSGetValueCommand from './commands/css-get-value.js';
-import UndoCommand from './commands/undo.js';
-import RedoCommand from './commands/redo.js';
+import NodeInspectionCommand from './lib/commands/node-inspection.js';
+import NodeDeletionCommand from './lib/commands/node-deletion.js';
+import CSSChangeCommand from './lib/commands/css-change.js';
+import CSSGetValueCommand from './lib/commands/css-get-value.js';
+import UndoCommand from './lib/commands/undo.js';
+import RedoCommand from './lib/commands/redo.js';
 
 function initSpeechRecognition() {
   let recognition = new webkitSpeechRecognition();

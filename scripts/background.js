@@ -1,16 +1,16 @@
-import SpeechRecognition from './speech-recognition.js';
-import CommandRunner from './command-runner.js';
-import TabDebugger from './tab-debugger.js';
-import {getActiveTab} from './helpers/tabs.js';
-import RecordingIcon from './recording-icon.js';
-import TextToSpeech from './text-to-speech.js';
+import SpeechRecognition from './lib/speech-recognition.js';
+import CommandRunner from './lib/command-runner.js';
+import TabDebugger from './lib/tab-debugger.js';
+import {getActiveTab} from './lib/helpers/tabs.js';
+import RecordingIcon from './lib/recording-icon.js';
+import TextToSpeech from './lib/text-to-speech.js';
 
-import NodeInspectionCommand from './commands/node-inspection.js';
-import NodeDeletionCommand from './commands/node-deletion.js';
-import CSSChangeCommand from './commands/css-change.js';
-import CSSGetValueCommand from './commands/css-get-value.js';
-import UndoCommand from './commands/undo.js';
-import RedoCommand from './commands/redo.js';
+import NodeInspectionCommand from './lib/commands/node-inspection.js';
+import NodeDeletionCommand from './lib/commands/node-deletion.js';
+import CSSChangeCommand from './lib/commands/css-change.js';
+import CSSGetValueCommand from './lib/commands/css-get-value.js';
+import UndoCommand from './lib/commands/undo.js';
+import RedoCommand from './lib/commands/redo.js';
 
 let textToSpeech = new TextToSpeech();
 let recordingIcon = new RecordingIcon();
