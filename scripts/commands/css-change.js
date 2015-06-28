@@ -30,10 +30,10 @@ class CSSChangeCommand extends Command {
   }
 
   appendToStyles(nodeId, text, tabDebugger) {
-    console.log('change styles', nodeId, text);
+    console.log('CSSChangeCommand', nodeId, text);
 
     if(!nodeId) {
-      throw new Error('Invalid node.');
+      throw new Error('Invalid context.');
     }
 
     return tabDebugger.sendCommand('DOM.getAttributes', {
@@ -52,7 +52,6 @@ class CSSChangeCommand extends Command {
         value: oldStyleValue + text
       });
     }).catch(() => {
-      chrome.tts.speak('Node not found.');
       throw new Error('Node not found.');
     });
   }

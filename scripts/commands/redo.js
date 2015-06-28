@@ -19,7 +19,7 @@ class RedoCommand extends Command {
   }
 
   redoLastAction(tabDebugger) {
-    console.log('redo');
+    console.log('RedoCommand');
 
     return tabDebugger.sendCommand('DOM.redo');
   }

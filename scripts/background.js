@@ -10,7 +10,9 @@ import CSSChangeCommand from './commands/css-change.js';
 import CSSGetValueCommand from './commands/css-get-value.js';
 import UndoCommand from './commands/undo.js';
 import RedoCommand from './commands/redo.js';
+import TextToSpeech from './text-to-speech.js';
 
+let textToSpeech = new TextToSpeech();
 let recordingIcon = new RecordingIcon();
 let commandRunner = new CommandRunner();
 
@@ -25,18 +27,26 @@ let speechRecognition = new SpeechRecognition();
 let tabDebugger = null;
 
 speechRecognition.onResult.addListener((transcript) => {
-  commandRunner.recognize(transcript);
+  commandRunner.recognize(transcript).then((result) => {
+    if (result) {
+      textToSpeech.speak(result);
+    }
+  }).catch((error) => {
+    if (error) {
+      textToSpeech.speak(error);
+    }
+  });
 });
 
 speechRecognition.onEnd.addListener(() => {
-  if(tabDebugger && tabDebugger.isConnected()) {
+  if (tabDebugger && tabDebugger.isConnected()) {
     tabDebugger.disconnect();
   }
   recordingIcon.hide();
 });
 
 chrome.browserAction.onClicked.addListener(() => {
-  if(speechRecognition.isActive()) {
+  if (speechRecognition.isActive()) {
     speechRecognition.stop();
     return;
   }
@@ -59,7 +69,7 @@ chrome.browserAction.onClicked.addListener(() => {
         chrome.runtime.openOptionsPage();
       }
 
-      if(speechRecognition.isActive()) {
+      if (speechRecognition.isActive()) {
         speechRecognition.stop();
       }
 

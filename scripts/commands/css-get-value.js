@@ -23,10 +23,10 @@ class CSSGetValueCommand extends Command {
   }
 
   getComputedValue(property, nodeId, tabDebugger) {
-    console.log('getComputedValue', property, nodeId);
+    console.log('CSSGetValueCommand', property, nodeId);
 
     if(!nodeId) {
-      throw new Error('Invalid node.');
+      throw new Error('Invalid context.');
     }
 
     return tabDebugger.sendCommand('CSS.getComputedStyleForNode', {
@@ -37,18 +37,16 @@ class CSSGetValueCommand extends Command {
       });
 
       if(item) {
-        console.log('Property found! Value: ' + fromCSSValueToText(item.value));
-        chrome.tts.speak(fromCSSValueToText(item.value));
+        return fromCSSValueToText(item.value);
       } else {
-        console.log('Property ' + property + ' not found.');
+        return 'Property ' + property + ' not found.';
       }
     }).catch(() => {
-      chrome.tts.speak('Node not found.');
       throw new Error('Node not found.');
     });
   }
 }
 
-CSSGetValueCommand.description = `Get CSS property value of currently inspected node by saying "get its x" or "what's its x" (where "x" is the name of the CSS property).`;
+CSSGetValueCommand.description = `Get computed CSS property value of currently inspected node by saying "get its x" or "what's its x" (where "x" is the name of the CSS property).`;
 
 export default CSSGetValueCommand;

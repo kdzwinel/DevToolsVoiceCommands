@@ -19,16 +19,15 @@ class NodeDeletionCommand extends Command {
   }
 
   removeNode(nodeId, tabDebugger) {
-    console.log('removeNode', nodeId);
+    console.log('NodeDeletionCommand', nodeId);
 
     if(!nodeId) {
-      throw new Error('Invalid node.');
+      throw new Error('Invalid context.');
     }
 
     return tabDebugger.sendCommand('DOM.removeNode', {
       nodeId
     }).catch(() => {
-      chrome.tts.speak('Node not found.');
       throw new Error('Node not found.');
     });
   }

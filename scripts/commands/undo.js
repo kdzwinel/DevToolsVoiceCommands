@@ -19,7 +19,7 @@ class UndoCommand extends Command {
   }
 
   undoLastAction(tabDebugger) {
-    console.log('undo');
+    console.log('UndoCommand');
 
     return tabDebugger.sendCommand('DOM.undo');
   }

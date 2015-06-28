@@ -1,5 +1,13 @@
 import Command from '../command.js';
 
+const HIGHLIGHT_COLOR = {
+  r: 155,
+  g: 11,
+  b: 239,
+  a: 0.7
+};
+const HIGHLIGHT_TIMEOUT = 2000;
+
 class NodeInspectionCommand extends Command {
   constructor(commandRunner) {
     super(commandRunner);
@@ -9,7 +17,7 @@ class NodeInspectionCommand extends Command {
   execute(text, tabDebugger, commandContext) {
     let matches = text.match(this._regex);
 
-    if(matches) {
+    if (matches) {
       return this.selectNode(matches[2] + ', #' + matches[2] + ', .' + matches[2], tabDebugger, commandContext);
     }
 
@@ -19,7 +27,7 @@ class NodeInspectionCommand extends Command {
   }
 
   selectNode(selector, tabDebugger, commandContext) {
-    console.log('selectNode', selector);
+    console.log('NodeInspectionCommand', selector);
 
     let rootNodeId = commandContext.getRootNodeId();
 
@@ -27,22 +35,12 @@ class NodeInspectionCommand extends Command {
       nodeId: rootNodeId,
       selector
     }).then((data) => {
-      if(!data.nodeId) {
-        chrome.tts.speak('Node not found.');
-        throw new Error('Node not found.');
-      }
-
       commandContext.setContextNodeId(data.nodeId);
       commandContext.setContextCSSPropertyName(null);
 
       return tabDebugger.sendCommand('DOM.highlightNode', {
         highlightConfig: {
-          contentColor: {
-            r: 155,
-            g: 11,
-            b: 239,
-            a: 0.7
-          },
+          contentColor: HIGHLIGHT_COLOR,
           showInfo: true
         },
         nodeId: data.nodeId
@@ -50,10 +48,9 @@ class NodeInspectionCommand extends Command {
         //stop highlighting after couple of seconds
         setTimeout(() => {
           tabDebugger.sendCommand('DOM.hideHighlight');
-        }, 2000);
+        }, HIGHLIGHT_TIMEOUT);
       });
     }).catch(() => {
-      chrome.tts.speak('Node not found.');
       throw new Error('Node not found.');
     });
   }
