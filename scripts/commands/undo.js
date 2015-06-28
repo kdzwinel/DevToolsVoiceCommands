@@ -6,11 +6,11 @@ class UndoCommand extends Command {
     this._regex = /undo/i;
   }
 
-  execute(text) {
+  execute(text, tabDebugger, commandContext) {
     let matches = text.match(this._regex);
 
     if(matches) {
-      return this.undoLastAction();
+      return this.undoLastAction(tabDebugger);
     }
 
     return new Promise((resolve, reject) => {
@@ -18,10 +18,8 @@ class UndoCommand extends Command {
     });
   }
 
-  undoLastAction() {
+  undoLastAction(tabDebugger) {
     console.log('undo');
-
-    let tabDebugger = this._commandRunner.getTabDebugger();
 
     return tabDebugger.sendCommand('DOM.undo');
   }

@@ -7,11 +7,14 @@ class CSSGetValueCommand extends Command {
     this._regex = /(what's|what is|get)( its)? (\w+( \w+)?)/i;
   }
 
-  execute(text) {
+  execute(text, tabDebugger, commandContext) {
     let matches = text.match(this._regex);
 
     if(matches) {
-      return this.getComputedValue(toCSSProperty(matches[3]), this._commandRunner.getContextNodeId());
+      let property = toCSSProperty(matches[3]);
+
+      commandContext.setContextCSSPropertyName(property);
+      return this.getComputedValue(property, commandContext.getContextNodeId(), tabDebugger);
     }
 
     return new Promise((resolve, reject) => {
@@ -19,14 +22,12 @@ class CSSGetValueCommand extends Command {
     });
   }
 
-  getComputedValue(property, nodeId) {
+  getComputedValue(property, nodeId, tabDebugger) {
     console.log('getComputedValue', property, nodeId);
 
     if(!nodeId) {
       throw new Error('Invalid node.');
     }
-
-    let tabDebugger = this._commandRunner.getTabDebugger();
 
     return tabDebugger.sendCommand('CSS.getComputedStyleForNode', {
       nodeId

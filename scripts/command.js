@@ -1,14 +1,13 @@
 class Command {
-  constructor(commandRunner) {
+  constructor() {
     this._regex = /^$/i;
-    this._commandRunner = commandRunner;
   }
 
   match(text) {
     return text.search(this._regex);
   }
 
-  execute(text, {tabDebugger, rootNodeId, contextNodeId}) {
+  execute(text, tabDebugger, commandContext) {
 
   }
 }

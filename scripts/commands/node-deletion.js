@@ -6,11 +6,11 @@ class NodeDeletionCommand extends Command {
     this._regex = /(delete|remove) it/i;
   }
 
-  execute(text) {
+  execute(text, tabDebugger, commandContext) {
     let matches = text.match(this._regex);
 
     if(matches) {
-      return this.removeNode(this._commandRunner.getContextNodeId());
+      return this.removeNode(commandContext.getContextNodeId(), tabDebugger);
     }
 
     return new Promise((resolve, reject) => {
@@ -18,14 +18,12 @@ class NodeDeletionCommand extends Command {
     });
   }
 
-  removeNode(nodeId) {
+  removeNode(nodeId, tabDebugger) {
     console.log('removeNode', nodeId);
 
     if(!nodeId) {
       throw new Error('Invalid node.');
     }
-
-    let tabDebugger = this._commandRunner.getTabDebugger();
 
     return tabDebugger.sendCommand('DOM.removeNode', {
       nodeId

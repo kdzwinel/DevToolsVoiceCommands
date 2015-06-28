@@ -6,11 +6,11 @@ class NodeInspectionCommand extends Command {
     this._regex = /(select|inspect) (\w+)/i;
   }
 
-  execute(text) {
+  execute(text, tabDebugger, commandContext) {
     let matches = text.match(this._regex);
 
     if(matches) {
-      return this.selectNode(matches[2] + ', #' + matches[2] + ', .' + matches[2]);
+      return this.selectNode(matches[2] + ', #' + matches[2] + ', .' + matches[2], tabDebugger, commandContext);
     }
 
     return new Promise((resolve, reject) => {
@@ -18,11 +18,10 @@ class NodeInspectionCommand extends Command {
     });
   }
 
-  selectNode(selector) {
+  selectNode(selector, tabDebugger, commandContext) {
     console.log('selectNode', selector);
 
-    let tabDebugger = this._commandRunner.getTabDebugger();
-    let rootNodeId = this._commandRunner.getRootNodeId();
+    let rootNodeId = commandContext.getRootNodeId();
 
     return tabDebugger.sendCommand('DOM.querySelector', {
       nodeId: rootNodeId,
@@ -33,7 +32,8 @@ class NodeInspectionCommand extends Command {
         throw new Error('Node not found.');
       }
 
-      this._commandRunner.setContextNodeId(data.nodeId);
+      commandContext.setContextNodeId(data.nodeId);
+      commandContext.setContextCSSPropertyName(null);
 
       return tabDebugger.sendCommand('DOM.highlightNode', {
         highlightConfig: {

@@ -1,8 +1,9 @@
+import CommandContext from './command-context.js';
+
 class CommandRunner {
   constructor() {
     this._tabDebugger = null;
-    this._rootNodeId = null;
-    this._contextNodeId = null;
+    this._commandContext = new CommandContext();
     this._commands = new Set();
   }
 
@@ -17,28 +18,12 @@ class CommandRunner {
           throw new Error('Document root not available.');
         }
 
-        this._rootNodeId = data.root.nodeId;
+        this._commandContext.setRootNodeId(data.root.nodeId);
       });
   }
 
-  getTabDebugger() {
-    return this._tabDebugger;
-  }
-
-  getContextNodeId() {
-    return this._contextNodeId;
-  }
-
-  setContextNodeId(id) {
-    this._contextNodeId = id;
-  }
-
-  getRootNodeId() {
-    return this._rootNodeId;
-  }
-
   registerCommand(commandType) {
-    this._commands.add(new commandType(this));
+    this._commands.add(new commandType());
   }
 
   recognize(text) {
@@ -56,6 +41,9 @@ class CommandRunner {
       }
     });
 
+    let tabDebugger = this._tabDebugger;
+    let commandContext = this._commandContext;
+
     return matches
       .sort((a, b) => {
         return a.position - b.position;
@@ -63,10 +51,12 @@ class CommandRunner {
       //call next command only after previous one has finished
       .reduce((promise, {command}) => {
         if(!promise) {
-          return command.execute(text);
+          return command.execute(text, tabDebugger, commandContext);
         }
 
-        return promise.then(command.execute.bind(command, text));
+        let nextCommand = command.execute.bind(command, text, tabDebugger, commandContext);
+
+        return promise.then(nextCommand);
       }, null);
   }
 

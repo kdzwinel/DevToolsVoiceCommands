@@ -4,15 +4,24 @@ import {toCSSProperty, toCSSValue} from '../helpers/css.js';
 class CSSChangeCommand extends Command {
   constructor(commandRunner) {
     super(commandRunner);
-    this._regex = /(change|set)( its)? (\w+( \w+)?) to (\w+) ?(pixel|pixels|percent|em|ems)?/i;
+    this._regex = /(change|set) (its )?(\w+( \w+)?) to (\w+) ?(pixel|pixels|percent|em|ems)?/i;
   }
 
-  execute(text) {
+  execute(text, tabDebugger, commandContext) {
     let matches = text.match(this._regex);
 
     if(matches) {
-      let css = ';' + toCSSProperty(matches[3]) + ': ' + toCSSValue(matches[5], matches[6]) + ';';
-      return this.appendToStyles(this._commandRunner.getContextNodeId(), css);
+      let property = toCSSProperty(matches[3]);
+      let value = toCSSValue(matches[5], matches[6]);
+
+      if(matches[3] === 'it') {
+        property = commandContext.getContextCSSPropertyName();
+      }
+
+      commandContext.setContextCSSPropertyName(property);
+
+      let css = ';' + property + ': ' + value + ';';
+      return this.appendToStyles(commandContext.getContextNodeId(), css, tabDebugger);
     }
 
     return new Promise((resolve, reject) => {
@@ -20,14 +29,12 @@ class CSSChangeCommand extends Command {
     });
   }
 
-  appendToStyles(nodeId, text) {
+  appendToStyles(nodeId, text, tabDebugger) {
     console.log('change styles', nodeId, text);
 
     if(!nodeId) {
       throw new Error('Invalid node.');
     }
-
-    let tabDebugger = this._commandRunner.getTabDebugger();
 
     return tabDebugger.sendCommand('DOM.getAttributes', {
       nodeId

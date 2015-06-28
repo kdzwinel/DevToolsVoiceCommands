@@ -6,11 +6,11 @@ class RedoCommand extends Command {
     this._regex = /redo/i;
   }
 
-  execute(text) {
+  execute(text, tabDebugger, commandContext) {
     let matches = text.match(this._regex);
 
     if(matches) {
-      return this.redoLastAction();
+      return this.redoLastAction(tabDebugger);
     }
 
     return new Promise((resolve, reject) => {
@@ -18,10 +18,8 @@ class RedoCommand extends Command {
     });
   }
 
-  redoLastAction() {
+  redoLastAction(tabDebugger) {
     console.log('redo');
-
-    let tabDebugger = this._commandRunner.getTabDebugger();
 
     return tabDebugger.sendCommand('DOM.redo');
   }
