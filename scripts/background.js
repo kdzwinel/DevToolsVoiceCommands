@@ -4,6 +4,7 @@ import TabDebugger from './lib/tab-debugger.js';
 import {getActiveTab} from './lib/helpers/tabs.js';
 import RecordingIcon from './lib/recording-icon.js';
 import TextToSpeech from './lib/text-to-speech.js';
+import InjectedConsole from './lib/injected-console.js';
 
 import NodeInspectionCommand from './lib/commands/node-inspection.js';
 import NodeDeletionCommand from './lib/commands/node-deletion.js';
@@ -25,14 +26,19 @@ commandRunner.registerCommand(RedoCommand);
 
 let speechRecognition = new SpeechRecognition();
 let tabDebugger = null;
+let injectedConsole = null;
 
 speechRecognition.onResult.addListener((transcript) => {
+  injectedConsole.logMessage(`&#9834; "${transcript}"`);
+
   commandRunner.recognize(transcript).then((result) => {
     if (result && typeof result === 'string') {
+      injectedConsole.logMessage('&#10145; ' + result);
       textToSpeech.speak(result);
     }
   }).catch((error) => {
     if (error) {
+      injectedConsole.logMessage('&#9762; Error: ' + error.message);
       textToSpeech.speak(error.message);
     }
   });
@@ -43,6 +49,9 @@ speechRecognition.onEnd.addListener(() => {
     tabDebugger.disconnect();
   }
   recordingIcon.hide();
+  if(injectedConsole) {
+    injectedConsole.destroy();
+  }
 });
 
 chrome.browserAction.onClicked.addListener(() => {
@@ -59,6 +68,10 @@ chrome.browserAction.onClicked.addListener(() => {
       tabDebugger.onDisconnect.addListener(() => {
         speechRecognition.stop();
       });
+
+      injectedConsole = new InjectedConsole(tab.id);
+      window.ic = injectedConsole;
+
       return tabDebugger.connect();
     })
     .then(() => {

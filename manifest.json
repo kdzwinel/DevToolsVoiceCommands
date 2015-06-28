@@ -24,6 +24,7 @@
   "permissions": [
     "debugger",
     "tts",
-    "tabs"
+    "tabs",
+    "<all_urls>"
   ]
 }
