@@ -2,7 +2,7 @@
 
 Experimental extension that allows inspecting and modifying websites using voice commands.
 
-![DevToolsVoiceCommands in action](https://i.imgur.com/h7J4j9v.gif)
+![DevToolsVoiceCommands in action](https://i.imgur.com/RPkpUTI.gif)
 
 ## Installation
 
